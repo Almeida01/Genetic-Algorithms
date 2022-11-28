@@ -1,7 +1,10 @@
 package main.models;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class Population {
     private final LinkedList<Chromossome> population;
@@ -99,6 +102,7 @@ public class Population {
             int index = (int) (a + Math.round(u * (b - a)));
             winners.add(population.get(index));
         }
+        winners.sort(Chromossome::compareTo);
         return winners;
     }
 }
