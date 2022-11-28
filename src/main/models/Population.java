@@ -40,7 +40,7 @@ public class Population {
     }
 
     public int oneMaxFitness(Chromossome chromossome) {
-        assert(chromossome.getLength() <= 1000);
+        assert (chromossome.getLength() <= 1000);
 
         String gene = chromossome.getGene();
         int max = 0;
@@ -51,9 +51,54 @@ public class Population {
     }
 
     public int squareFitness(Chromossome chromossome) {
-        assert(chromossome.getLength() <= 10);
+        assert (chromossome.getLength() <= 10);
 
         int value = Integer.parseInt(chromossome.getGene(), 2);
         return value * value;
+    }
+
+    public LinkedList<Chromossome> binaryTournament(Random generator) {
+        LinkedList<Chromossome> winners = new LinkedList<>();
+        int compSize = 2 * size;
+        int[] competitors = generateCompetitors(generator, compSize);
+
+        for (int i = 0; i < compSize - 1; i += 2) {
+            int firstComp = competitors[i];
+            int secComp = competitors[i + 1];
+
+            int roundWinner = battle(firstComp, secComp);
+            winners.add(population.get(roundWinner));
+        }
+
+        return winners;
+    }
+
+    private int[] generateCompetitors(Random generator, int compSize) {
+        int a = 0, b = size - 1;
+        double u;
+        int[] competitors = new int[compSize];
+        for (int i = 0; i < compSize; i++) {
+            u = generator.nextDouble();
+            competitors[i] = (int) (a + Math.round(u * (b - a)));
+        }
+        return competitors;
+    }
+
+    private int battle(int firstComp, int secComp) {
+        double fitFirst = population.get(firstComp).getFitness();
+        double fitSec = population.get(secComp).getFitness();
+        return fitFirst >= fitSec ? firstComp : secComp;
+    }
+
+    public LinkedList<Chromossome> roulette(Random generator, int n) {
+        LinkedList<Chromossome> winners = new LinkedList<>();
+        int a = 0, b = size - 1;
+        double u;
+        for (int i = 0; i < n; i++) {
+            u = generator.nextDouble();
+            int index = (int) (a + Math.round(u * (b - a)));
+            winners.add(population.get(index));
+        }
+        return winners;
     }
 }

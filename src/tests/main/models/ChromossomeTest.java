@@ -1,5 +1,6 @@
-package main.models;
+package tests.main.models;
 
+import main.models.Chromossome;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;

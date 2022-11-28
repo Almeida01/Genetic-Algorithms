@@ -4,8 +4,6 @@ import java.util.Random;
 
 public class Chromossome {
     private final String gene;
-
-
     private final int length;
     private double fitness;
 
@@ -18,6 +16,13 @@ public class Chromossome {
 
     public double getFitness() {
         return fitness;
+    }
+
+    public void setFitness(double fitness) { this.fitness = fitness; }
+
+    public Chromossome(int l, Random generator, double fitness) {
+        this(l, generator);
+        this.fitness = fitness;
     }
 
     public Chromossome(int l, Random generator) {
@@ -36,4 +41,14 @@ public class Chromossome {
         this.length = gene.length();
     }
 
+    public Chromossome(String gene, double fitness) {
+        this.gene = gene;
+        this.length = gene.length();
+        this.fitness = fitness;
+    }
+
+    @Override
+    public String toString() {
+        return gene;
+    }
 }
