@@ -2,6 +2,7 @@ package main.models;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -44,5 +45,46 @@ class PopulationTest {
         winners.add(c);
 
         assertEquals(winners, population.binaryTournament(generator));
+    }
+
+    @Test
+    void roulette() {
+        Random generator = new Random(0);
+
+        Chromossome a = new Chromossome("110", 1.0);
+        Chromossome b = new Chromossome("001", 3.0);
+        Chromossome c = new Chromossome("101", 4.0);
+        Chromossome d = new Chromossome("111", 2.0);
+
+        Population population = new Population();
+        population.addChromossome(a);
+        population.addChromossome(b);
+        population.addChromossome(c);
+        population.addChromossome(d);
+
+        LinkedList<Chromossome> winners = new LinkedList<>();
+        winners.add(b);
+        winners.add(b);
+        winners.add(c);
+        winners.add(d);
+
+        assertEquals(winners, population.roulette(generator, 4));
+
+    }
+
+    @Test
+    void onePointCrossover() {
+        Random generator = new Random(0);
+        Population population = new Population();
+
+        Chromossome a = new Chromossome("11111111");
+        Chromossome b = new Chromossome("00000000");
+
+        Chromossome[] children = {
+                new Chromossome("11111000"),
+                new Chromossome("00000111")
+        };
+
+        assertEquals(Arrays.toString(children), Arrays.toString(population.onePointCrossover(generator, a, b)));
     }
 }

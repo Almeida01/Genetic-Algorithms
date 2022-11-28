@@ -1,10 +1,7 @@
 package main.models;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class Population {
     private final LinkedList<Chromossome> population;
@@ -42,6 +39,12 @@ public class Population {
         return str.toString();
     }
 
+    public int mapToPopSize(Random generator, int a, int b) {
+        double u = generator.nextDouble();
+        int index = (int) (a + Math.round(u * (b - a)));
+        return index;
+    }
+
     public int oneMaxFitness(Chromossome chromossome) {
         assert (chromossome.getLength() <= 1000);
 
@@ -77,12 +80,9 @@ public class Population {
     }
 
     private int[] generateCompetitors(Random generator, int compSize) {
-        int a = 0, b = size - 1;
-        double u;
         int[] competitors = new int[compSize];
         for (int i = 0; i < compSize; i++) {
-            u = generator.nextDouble();
-            competitors[i] = (int) (a + Math.round(u * (b - a)));
+            competitors[i] = mapToPopSize(generator, 0, size - 1);
         }
         return competitors;
     }
@@ -95,14 +95,44 @@ public class Population {
 
     public LinkedList<Chromossome> roulette(Random generator, int n) {
         LinkedList<Chromossome> winners = new LinkedList<>();
-        int a = 0, b = size - 1;
-        double u;
         for (int i = 0; i < n; i++) {
-            u = generator.nextDouble();
-            int index = (int) (a + Math.round(u * (b - a)));
+            int index = mapToPopSize(generator, 0, size - 1);
             winners.add(population.get(index));
         }
         winners.sort(Chromossome::compareTo);
+        reverseLinkedList(winners);
         return winners;
+    }
+
+    private void reverseLinkedList(LinkedList<Chromossome> list) {
+        for (int i = 0; i < (list.size() / 2); i++) {
+            int end = (list.size() - 1) - i;
+            Chromossome temp = list.get(end);
+            list.set(end, list.get(i));
+            list.set(i, temp);
+        }
+    }
+
+    public Chromossome[] onePointCrossover(Random generator, Chromossome parent1, Chromossome parent2) {
+         int crossPoint = mapToPopSize(generator, 0, parent1.getLength() - 1);
+
+        String gene1 = parent1.getGene();
+        String gene2 = parent2.getGene();
+
+        String child1 = gene1.substring(0, crossPoint) + gene2.substring(crossPoint);
+        String child2 = gene2.substring(0, crossPoint) + gene1.substring(crossPoint);
+
+        return new Chromossome[]{new Chromossome(child1), new Chromossome(child2)};
+    }
+
+    public Chromossome[] uniformCrossover(Random generator, Chromossome parent1, Chromossome parent2) {
+        int crossPoint = mapToPopSize(generator, 0, parent1.getLength() - 1);
+
+        String gene1 = parent1.getGene();
+        String gene2 = parent2.getGene();
+
+        String child1 = gene1.substring(0, crossPoint) + gene2.substring(crossPoint);
+        String child2 = gene2.substring(0, crossPoint) + gene1.substring(crossPoint);
+        return null;
     }
 }

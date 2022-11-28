@@ -2,7 +2,7 @@ package main.models;
 
 import java.util.Random;
 
-public class Chromossome implements Comparable{
+public class Chromossome {
     private final String gene;
     private final int length;
     private double fitness;
@@ -10,6 +10,7 @@ public class Chromossome implements Comparable{
     public String getGene() {
         return gene;
     }
+
     public int getLength() {
         return length;
     }
@@ -18,7 +19,9 @@ public class Chromossome implements Comparable{
         return fitness;
     }
 
-    public void setFitness(double fitness) { this.fitness = fitness; }
+    public void setFitness(double fitness) {
+        this.fitness = fitness;
+    }
 
     public Chromossome(String gene) {
         this.gene = gene;
@@ -53,9 +56,7 @@ public class Chromossome implements Comparable{
         return gene;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        Chromossome c = (Chromossome) o;
+    public int compareTo(Chromossome c) {
 
         int value = Integer.parseInt(getGene(), 2);
         int oValue = Integer.parseInt(c.getGene(), 2);

@@ -1,6 +1,7 @@
 import main.models.Chromossome;
 import main.models.Population;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -9,19 +10,14 @@ public class Main {
         Random generator = new Random(0);
         Scanner sc = new Scanner(System.in);
         Population population = new Population();
-        int n = 0;
 
+        Chromossome[] children = population.onePointCrossover(generator,
+                new Chromossome(sc.next()),
+                new Chromossome(sc.next())
+        );
 
-        while (n < 4) {
-            population.addChromossome(
-                    new Chromossome(
-                            sc.next(),
-                            Double.parseDouble(sc.next())
-                    ));
-            n++;
-        }
+        Arrays.stream(children).toList().forEach(System.out::println);
 
-        population.roulette(generator, n).forEach(System.out::println);
 
     }
 
