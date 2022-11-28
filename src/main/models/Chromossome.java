@@ -20,8 +20,14 @@ public class Chromossome {
 
     public void setFitness(double fitness) { this.fitness = fitness; }
 
-    public Chromossome(int l, Random generator, double fitness) {
-        this(l, generator);
+    public Chromossome(String gene) {
+        this.gene = gene;
+        this.length = gene.length();
+    }
+
+    public Chromossome(String gene, double fitness) {
+        this.gene = gene;
+        this.length = gene.length();
         this.fitness = fitness;
     }
 
@@ -35,17 +41,12 @@ public class Chromossome {
         this.gene = chromossome.toString();
         this.length = l;
     }
-
-    public Chromossome(String gene) {
-        this.gene = gene;
-        this.length = gene.length();
-    }
-
-    public Chromossome(String gene, double fitness) {
-        this.gene = gene;
-        this.length = gene.length();
+    
+    public Chromossome(int l, Random generator, double fitness) {
+        this(l, generator);
         this.fitness = fitness;
     }
+
 
     @Override
     public String toString() {
