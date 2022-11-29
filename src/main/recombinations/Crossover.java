@@ -8,7 +8,7 @@ import static main.models.Population.mapToPopSize;
 
 public class Crossover {
     private static int getCrossPoint(Random generator, int a, int b, double u) {
-        return mapToPopSize(generator, a, b, u);
+        return mapToPopSize(a, b, u);
     }
 
     public static Chromossome[] onePoint(Random generator, Chromossome parent1, Chromossome parent2) {

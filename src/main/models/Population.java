@@ -6,13 +6,13 @@ import java.util.Random;
 public class Population {
     private final LinkedList<Chromossome> population;
     private int size;
-    private double fitnessSum;
+    private double totalFitness;
     public int getSize() {
         return size;
     }
 
-    public double getFitnessSum() {
-        return fitnessSum;
+    public double getTotalFitness() {
+        return totalFitness;
     }
 
     public LinkedList<Chromossome> getPopulation() {
@@ -39,6 +39,12 @@ public class Population {
         size++;
     }
 
+    public void calculateTotalFitness() {
+        for (Chromossome chromossome : population) {
+            totalFitness += chromossome.getFitness();
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
@@ -47,8 +53,7 @@ public class Population {
         return str.toString();
     }
 
-    public static int mapToPopSize(Random generator, int a, int b, double u) {
-        int index = (int) (a + Math.round(u * (b - a)));
-        return index;
+    public static int mapToPopSize(int min, int max, double value) {
+        return (int) (min + Math.round(value * (max - min)));
     }
 }

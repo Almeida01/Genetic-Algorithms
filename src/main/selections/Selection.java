@@ -1,4 +1,4 @@
-package main.tournaments;
+package main.selections;
 
 import main.models.Chromossome;
 import main.models.Population;
@@ -8,7 +8,7 @@ import java.util.Random;
 
 import static main.models.Population.mapToPopSize;
 
-public class Tournament {
+public class Selection {
     public static LinkedList<Chromossome> binaryTournament(Random generator, Population population) {
         LinkedList<Chromossome> participants = population.getPopulation();
         LinkedList<Chromossome> winners = new LinkedList<>();
@@ -30,7 +30,7 @@ public class Tournament {
         int[] competitors = new int[compSize];
         for (int i = 0; i < compSize; i++) {
             double u = generator.nextDouble();
-            competitors[i] = mapToPopSize(generator, 0, population.getSize() - 1, u);
+            competitors[i] = mapToPopSize(0, population.getSize() - 1, u);
         }
         return competitors;
     }
@@ -44,11 +44,8 @@ public class Tournament {
     public static LinkedList<Chromossome> roulette(Random generator, Population population) {
         LinkedList<Chromossome> participants = population.getPopulation();
         LinkedList<Chromossome> winners = new LinkedList<>();
-        double totalFitness = 0;
-        for (Chromossome chromossome : participants) {
-            totalFitness += chromossome.getFitness();
-        }
 
+        double totalFitness = population.getTotalFitness();
         assert (totalFitness > 0);
 
         int n = population.getSize();
@@ -58,7 +55,7 @@ public class Tournament {
                 prob += participants.get(i).getFitness() / totalFitness;
                 double u = generator.nextDouble();
                 if (u > prob) continue;
-                int index = mapToPopSize(generator, 0, population.getSize() - 1, u);
+                int index = mapToPopSize(0, population.getSize() - 1, u);
                 winners.add(participants.get(index));
                 break;
             }
@@ -78,6 +75,7 @@ public class Tournament {
     }
 
     public static LinkedList<Chromossome> selectionWithoutReplacement(Random generator, Population population, int s) {
-
+        //Chromossome[] children = Permutation.random(generator, )
+        return null;
     }
 }

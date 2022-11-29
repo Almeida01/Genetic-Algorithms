@@ -1,4 +1,4 @@
-package main.tournaments;
+package main.selections;
 
 import main.models.Chromossome;
 import main.models.Population;
@@ -9,7 +9,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TournamentTest {
+class SelectionTest {
     @Test
     void binaryTournament() {
         Random generator = new Random(0);
@@ -29,7 +29,7 @@ class TournamentTest {
         winners.add(c);
         winners.add(c);
 
-        assertEquals(winners, Tournament.binaryTournament(generator, population));
+        assertEquals(winners, Selection.binaryTournament(generator, population));
     }
 
     @Test
@@ -53,6 +53,6 @@ class TournamentTest {
         winners.add(c);
         winners.add(d);
 
-        assertEquals(winners, Tournament.roulette(generator, population));
+        assertEquals(winners, Selection.roulette(generator, population));
     }
 }
