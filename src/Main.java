@@ -1,5 +1,5 @@
 import main.models.Chromossome;
-import main.models.Population;
+import main.recombinations.Crossover;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -9,16 +9,13 @@ public class Main {
     public static void main(String[] args) {
         Random generator = new Random(0);
         Scanner sc = new Scanner(System.in);
-        Population population = new Population();
 
-        Chromossome[] children = population.onePointCrossover(generator,
+        Chromossome[] children = Crossover.onePoint(generator,
                 new Chromossome(sc.next()),
                 new Chromossome(sc.next())
         );
 
         Arrays.stream(children).toList().forEach(System.out::println);
-
-
     }
 
 

@@ -63,4 +63,5 @@ public class Chromossome {
 
         return Integer.compare(oValue, value);
     }
+
 }
