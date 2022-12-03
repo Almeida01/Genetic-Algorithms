@@ -78,4 +78,9 @@ class PopulationTest {
         assertEquals(result, pop.selectionWithoutReplacement(generator, 2));
 
     }
+
+    @Test
+    void oneGerationOneMax() {
+
+    }
 }

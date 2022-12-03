@@ -24,17 +24,16 @@ public class Population {
         this.population = new LinkedList<>();
     }
 
-    public Population(int n, int l, Random generator) {
-        this();
-        this.size = n;
-        for (int i = 0; i < n; i++) population.add(new Chromosome(l, generator));
-        calculateTotalFitness();
-    }
-
     public Population(int n) {
         this();
         this.size = n;
     }
+
+    public Population(int n, int l, Random generator) {
+        this(n);
+        for (int i = 0; i < n; i++) {
+            population.add(new Chromosome(l, generator));
+        }}
 
     public void addChromossome(Chromosome chromosome) {
         population.add(chromosome);
@@ -125,10 +124,10 @@ public class Population {
     public LinkedList<Chromosome> selectionWithoutReplacement(Random generator, int s) {
         int[] permutation;
         LinkedList<Chromosome> tournament = new LinkedList<>();
+        LinkedList<Chromosome> fighters = new LinkedList<>();
         int battles = size / s;
         for (int i = 0; i < s; i++) {
-            LinkedList<Chromosome> fighters = new LinkedList<>();
-
+            fighters.clear();
             permutation = Chromosome.randomPermutation(generator, size);
             for (int i1 : permutation)
                 fighters.add(population.get(i1));
@@ -149,5 +148,33 @@ public class Population {
             if (fighters.get(i).getFitness() > fighters.get(index).getFitness())
                 index = i;
         return index;
+    }
+
+    /**
+     * @param generator Random object.
+     * @param s         Tournament size
+     * @param pc        Crossover probability
+     * @param pm        Mutation probability
+     */
+    public LinkedList<Chromosome> oneGerationOneMax(Random generator, int s, double pc, double pm) {
+        LinkedList<Chromosome> generation = selectionWithoutReplacement(generator, s);
+
+        for (int i = 0; i < size - 1; i++) {
+            Chromosome parent1 = generation.get(i);
+            Chromosome parent2 = generation.get(i + 1);
+            double prob = generator.nextDouble();
+            if (prob >= pc) {
+                Chromosome[] child = parent1.onePointCrossover(generator, parent2);
+                generation.set(i, child[0]);
+                generation.set(i + 1, child[1]);
+            } else {
+                generation.set(i, parent1.clone());
+                generation.set(i + 1, parent2.clone());
+            }
+        }
+
+        generation.forEach(x -> x = x.bitFlipMutation(generator, pm));
+        return generation;
+
     }
 }

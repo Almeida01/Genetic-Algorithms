@@ -28,13 +28,14 @@ public class Chromosome implements IProblem {
         return fitness;
     }
 
-    public double getFitness(IProblem l) {
-        return l.getFitness();
-    }
-
     private void setFitness(double fitness) {
         this.fitness = fitness;
     }
+
+    public void setFitness(IProblem l) {
+        this.fitness = l.getFitness();
+    }
+
 
     public Chromosome(String gene) {
         this.gene = gene;
@@ -127,9 +128,8 @@ public class Chromosome implements IProblem {
     }
 
     /**
-     *
      * @param generator Random object.
-     * @param N Range of permutation. From 0 to N-1.
+     * @param N         Range of permutation. From 0 to N-1.
      * @return Integer array representing index of .
      */
     public static int[] randomPermutation(Random generator, int N) {
@@ -146,5 +146,9 @@ public class Chromosome implements IProblem {
             v[i] = temp;
         }
         return v;
+    }
+
+    public Chromosome clone() {
+        return new Chromosome(gene, fitness);
     }
 }
