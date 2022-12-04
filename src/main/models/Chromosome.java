@@ -25,7 +25,7 @@ public class Chromosome implements IProblem {
     }
 
     public double getFitness() {
-        return fitness;
+        return this.fitness;
     }
 
     private void setFitness(double fitness) {
@@ -67,22 +67,18 @@ public class Chromosome implements IProblem {
 
     @Override
     public String toString() {
-        return gene;
+        return gene + " " + fitness;
     }
 
     public int compareTo(Chromosome c) {
-
-        int value = Integer.parseInt(getGene(), 2);
-        int oValue = Integer.parseInt(c.getGene(), 2);
-
-        return Integer.compare(oValue, value);
+        return Double.compare(fitness, c.fitness);
     }
 
     public Chromosome bitFlipMutation(Random generator, double prob) {
         char[] child = this.getGene().toCharArray();
         for (int i = 0; i < this.getLength(); i++) {
             double u = generator.nextDouble();
-            if (u >= prob) continue;
+            if (u > prob) continue;
             child[i] = child[i] == '1' ? '0' : '1';
         }
 
@@ -90,13 +86,13 @@ public class Chromosome implements IProblem {
         return new Chromosome(mutated);
     }
 
-    private int getCrossPoint(Random generator, int a, int b, double u) {
+    private int getCrossPoint(int a, int b, double u) {
         return mapToPopSize(a, b, u);
     }
 
     public Chromosome[] onePointCrossover(Random generator, Chromosome parent2) {
         double u = generator.nextDouble();
-        int crossPoint = getCrossPoint(generator, 0, this.getLength() - 1, u);
+        int crossPoint = getCrossPoint(0, this.getLength() - 1, u);
 
         String gene1 = this.getGene();
         String gene2 = parent2.getGene();
@@ -149,6 +145,6 @@ public class Chromosome implements IProblem {
     }
 
     public Chromosome clone() {
-        return new Chromosome(gene, fitness);
+        return new Chromosome(this.gene, this.fitness);
     }
 }

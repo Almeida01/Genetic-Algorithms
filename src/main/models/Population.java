@@ -1,5 +1,7 @@
 package main.models;
 
+import main.fitness.OneMax;
+
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -33,7 +35,8 @@ public class Population {
         this(n);
         for (int i = 0; i < n; i++) {
             population.add(new Chromosome(l, generator));
-        }}
+        }
+    }
 
     public void addChromossome(Chromosome chromosome) {
         population.add(chromosome);
@@ -158,23 +161,29 @@ public class Population {
      */
     public LinkedList<Chromosome> oneGerationOneMax(Random generator, int s, double pc, double pm) {
         LinkedList<Chromosome> generation = selectionWithoutReplacement(generator, s);
-
-        for (int i = 0; i < size - 1; i++) {
+        System.out.println("Select: " + generation);
+        for (int i = 0; i < generation.size() - 1; i += 2) {
             Chromosome parent1 = generation.get(i);
             Chromosome parent2 = generation.get(i + 1);
             double prob = generator.nextDouble();
-            if (prob >= pc) {
-                Chromosome[] child = parent1.onePointCrossover(generator, parent2);
-                generation.set(i, child[0]);
-                generation.set(i + 1, child[1]);
-            } else {
+            if (prob > pc) {
                 generation.set(i, parent1.clone());
                 generation.set(i + 1, parent2.clone());
+                continue;
             }
+            Chromosome[] child = parent1.onePointCrossover(generator, parent2);
+            child[0].setFitness(new OneMax(child[0]));
+            child[1].setFitness(new OneMax(child[1]));
+            generation.set(i, child[0]);
+            generation.set(i + 1, child[1]);
         }
 
-        generation.forEach(x -> x = x.bitFlipMutation(generator, pm));
-        return generation;
+        System.out.println("Crossover: " + generation);
 
+        generation.forEach(x -> x = x.bitFlipMutation(generator, pm));
+
+        System.out.println("Bitflip: " + generation);
+
+        return generation;
     }
 }
