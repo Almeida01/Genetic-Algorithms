@@ -130,7 +130,7 @@ public class Population {
         LinkedList<Chromosome> fighters = new LinkedList<>();
         int battles = size / s;
         for (int i = 0; i < s; i++) {
-            fighters.clear();
+            fighters = new LinkedList<>();
             permutation = Chromosome.randomPermutation(generator, size);
             for (int i1 : permutation)
                 fighters.add(population.get(i1));
@@ -160,17 +160,13 @@ public class Population {
      * @param pm        Mutation probability
      */
     public LinkedList<Chromosome> oneGerationOneMax(Random generator, int s, double pc, double pm) {
-        LinkedList<Chromosome> generation = selectionWithoutReplacement(generator, s);
-        System.out.println("Select: " + generation);
+        LinkedList<Chromosome> generation = this.selectionWithoutReplacement(generator, s);
+//        System.out.println("Select: " + generation);
         for (int i = 0; i < generation.size() - 1; i += 2) {
             Chromosome parent1 = generation.get(i);
             Chromosome parent2 = generation.get(i + 1);
             double prob = generator.nextDouble();
-            if (prob > pc) {
-                generation.set(i, parent1.clone());
-                generation.set(i + 1, parent2.clone());
-                continue;
-            }
+            if (prob > pc) continue;
             Chromosome[] child = parent1.onePointCrossover(generator, parent2);
             child[0].setFitness(new OneMax(child[0]));
             child[1].setFitness(new OneMax(child[1]));
@@ -178,11 +174,15 @@ public class Population {
             generation.set(i + 1, child[1]);
         }
 
-        System.out.println("Crossover: " + generation);
+//        System.out.println("Crossover: " + generation);
 
-        generation.forEach(x -> x = x.bitFlipMutation(generator, pm));
+        for (int i = 0; i < generation.size() ; i++) {
+            Chromosome x = generation.get(i).bitFlipMutation(generator, pm);
+            x.setFitness(new OneMax(x));
+            generation.set(i, x);
+        }
 
-        System.out.println("Bitflip: " + generation);
+//        System.out.println("Bitflip: " + generation);
 
         return generation;
     }

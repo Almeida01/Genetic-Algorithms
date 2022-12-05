@@ -14,8 +14,8 @@ public class Main {
         int n = sc.nextInt();
         int l = sc.nextInt();
         int s = sc.nextInt();
-        double pm = sc.nextDouble();
-        double pc = sc.nextDouble();
+        double pm = Double.parseDouble(sc.next());
+        double pc = Double.parseDouble(sc.next());
         int rep = sc.nextInt();
 
         Population population = new Population(n, l, generator);
@@ -24,20 +24,20 @@ public class Main {
             OneMax oneMax = new OneMax(chromosome);
             chromosome.setFitness(oneMax);
         }
-        System.out.println(initPop);
-        //print(initPop);
+//        System.out.println(initPop);
+        print(initPop);
 
         LinkedList<Chromosome> generation = population.oneGerationOneMax(generator, s, pc, pm);
         print(generation);
 
         for (int i = 0; i < rep - 1; i++) {
-            population = new Population(n, l, generator);
-            for (int j = 0; j < n; j++) {
+            population = new Population();
+            for (int j = 0; j < generation.size(); j++) {
                 population.addChromossome(generation.get(j));
             }
+
             generation = population.oneGerationOneMax(generator, s, pc, pm);
             print(generation);
-
         }
     }
 
