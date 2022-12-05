@@ -74,6 +74,13 @@ public class Chromosome implements IProblem {
         return Double.compare(fitness, c.fitness);
     }
 
+    public int compareToGene(Chromosome c) {
+        int value = Integer.parseInt(getGene(), 2);
+        int oValue = Integer.parseInt(c.getGene(), 2);
+
+        return Integer.compare(value, oValue);
+    }
+
     public Chromosome bitFlipMutation(Random generator, double prob) {
         char[] child = this.getGene().toCharArray();
         for (int i = 0; i < this.getLength(); i++) {

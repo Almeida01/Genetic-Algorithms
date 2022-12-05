@@ -2,6 +2,7 @@ package main.models;
 
 import main.fitness.OneMax;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -34,7 +35,7 @@ public class Population {
     public Population(int n, int l, Random generator) {
         this(n);
         for (int i = 0; i < n; i++) {
-            population.add(new Chromosome(l, generator));
+            addChromossome(new Chromosome(l, generator));
         }
     }
 
@@ -100,28 +101,19 @@ public class Population {
         assert (totalFitness > 0);
 
         for (int i = 0; i < this.size; i++) {
-            double prob = 0;
+            double sum = 0;
             for (int j = 0; j < this.size; j++) {
-                prob += population.get(i).getFitness() / totalFitness;
                 double u = generator.nextDouble();
-                if (u > prob) continue;
-                int index = mapToPopSize(0, this.size - 1, u);
-                winners.add(population.get(index));
-                break;
+                Chromosome c = population.get(j);
+                sum += (c.getFitness() / totalFitness);
+                if (u < sum) {
+                    winners.add(c);
+                    break;
+                }
             }
         }
-        //winners.sort(Chromossome::compareTo);
-        //reverseLinkedList(winners);
+        winners.sort(Chromosome::compareToGene);
         return winners;
-    }
-
-    private void reverseLinkedList(LinkedList<Chromosome> list) {
-        for (int i = 0; i < (list.size() / 2); i++) {
-            int end = (list.size() - 1) - i;
-            Chromosome temp = list.get(end);
-            list.set(end, list.get(i));
-            list.set(i, temp);
-        }
     }
 
     public LinkedList<Chromosome> selectionWithoutReplacement(Random generator, int s) {
@@ -176,7 +168,7 @@ public class Population {
 
 //        System.out.println("Crossover: " + generation);
 
-        for (int i = 0; i < generation.size() ; i++) {
+        for (int i = 0; i < generation.size(); i++) {
             Chromosome x = generation.get(i).bitFlipMutation(generator, pm);
             x.setFitness(new OneMax(x));
             generation.set(i, x);
