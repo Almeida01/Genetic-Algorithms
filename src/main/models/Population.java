@@ -95,6 +95,9 @@ public class Population {
 
     public LinkedList<Chromosome> roulette(Random generator) {
         LinkedList<Chromosome> winners = new LinkedList<>();
+        Population copy = new Population();
+        population.forEach(x -> copy.addChromosome(x.clone()));
+        copy.population.sort(Chromosome::compareToInverse);
 
         double totalFitness = getTotalFitness();
         assert (totalFitness > 0);
@@ -103,7 +106,7 @@ public class Population {
             double sum = 0;
             double u = generator.nextDouble();
             for (int j = 0; j < this.size; j++) {
-                Chromosome c = population.get(j);
+                Chromosome c = copy.population.get(j);
                 sum += (c.getFitness() / totalFitness);
                 if (u < sum) {
                     winners.add(c);

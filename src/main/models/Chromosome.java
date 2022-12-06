@@ -68,6 +68,10 @@ public class Chromosome implements IProblem {
         return Double.compare(fitness, c.fitness);
     }
 
+    public int compareToInverse(Chromosome c) {
+        return Double.compare(c.fitness, fitness);
+    }
+
     public int compareToGene(Chromosome c) {
         int value = Integer.parseInt(getGene(), 2);
         int oValue = Integer.parseInt(c.getGene(), 2);
