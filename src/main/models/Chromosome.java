@@ -11,11 +11,6 @@ public class Chromosome implements IProblem {
     private final int length;
     private double fitness;
 
-    public Chromosome() {
-        gene = "";
-        length = 0;
-    }
-
     public String getGene() {
         return gene;
     }
@@ -35,7 +30,6 @@ public class Chromosome implements IProblem {
     public void setFitness(IProblem l) {
         this.fitness = l.getFitness();
     }
-
 
     public Chromosome(String gene) {
         this.gene = gene;
@@ -67,7 +61,7 @@ public class Chromosome implements IProblem {
 
     @Override
     public String toString() {
-        return gene + " " + fitness;
+        return gene;
     }
 
     public int compareTo(Chromosome c) {

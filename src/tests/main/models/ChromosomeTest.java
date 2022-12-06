@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ChromosomeTest {
 
@@ -69,21 +68,14 @@ class ChromosomeTest {
         assertEquals(child.getGene(), a.bitFlipMutation(generator, prob).getGene());
     }
 
-    /*@Test
+    @Test
     void random() {
         Random generator = new Random(0);
         int N = 4;
-        Chromosome a = new Chromosome();
+        int[] expected = {2, 1, 3, 0};
 
-        Chromosome[] expected = {
-                new Chromosome("2"),
-                new Chromosome("1"),
-                new Chromosome("3"),
-                new Chromosome("0")
-        };
-
-        assertTrue(compare(expected, a.randomPermutation(generator, N)));
-    }*/
+        assertArrayEquals(expected, Chromosome.randomPermutation(generator, N));
+    }
 
     private boolean compare(Chromosome[] a, Chromosome[] b) {
         for (int i = 0; i < a.length; i++)

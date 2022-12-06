@@ -2,11 +2,11 @@ package main.models;
 
 import org.junit.jupiter.api.Test;
 
-import javax.management.relation.RelationNotFoundException;
 import java.util.LinkedList;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PopulationTest {
     @Test
@@ -18,10 +18,10 @@ class PopulationTest {
         Chromosome b = new Chromosome(l, generator, 7);
         Chromosome c = new Chromosome(l, generator, 23);
         Chromosome d = new Chromosome(l, generator, 5);
-        population.addChromossome(a);
-        population.addChromossome(b);
-        population.addChromossome(c);
-        population.addChromossome(d);
+        population.addChromosome(a);
+        population.addChromosome(b);
+        population.addChromosome(c);
+        population.addChromosome(d);
         LinkedList<Chromosome> winners = new LinkedList<>();
         winners.add(a);
         winners.add(c);
@@ -41,10 +41,10 @@ class PopulationTest {
         Chromosome d = new Chromosome("111", 2.0);
 
         Population population = new Population();
-        population.addChromossome(a);
-        population.addChromossome(b);
-        population.addChromossome(c);
-        population.addChromossome(d);
+        population.addChromosome(a);
+        population.addChromosome(b);
+        population.addChromosome(c);
+        population.addChromosome(d);
 
         LinkedList<Chromosome> winners = new LinkedList<>();
         winners.add(b);
@@ -64,10 +64,10 @@ class PopulationTest {
         Chromosome c = new Chromosome("101", 23.0);
         Chromosome d = new Chromosome("111", 5.0);
 
-        pop.addChromossome(a);
-        pop.addChromossome(b);
-        pop.addChromossome(c);
-        pop.addChromossome(d);
+        pop.addChromosome(a);
+        pop.addChromosome(b);
+        pop.addChromosome(c);
+        pop.addChromosome(d);
 
         LinkedList<Chromosome> result = new LinkedList<>();
         result.add(c);
@@ -80,7 +80,22 @@ class PopulationTest {
     }
 
     @Test
-    void oneGerationOneMax() {
+    void testOneGenerationOneMax() {
+        Random generator = new Random(0);
+        Population population = new Population(4, 5, generator);
 
+        LinkedList<Chromosome> expected = new LinkedList<>();
+        expected.add(new Chromosome("10101", 3));
+        expected.add(new Chromosome("01111", 4));
+        expected.add(new Chromosome("10111", 4));
+        expected.add(new Chromosome("11101", 4));
+
+        assertTrue(compare(expected, population.oneGenerationOneMax(generator, 2, 0.1, 0.8)));
+    }
+
+    private boolean compare(LinkedList<Chromosome> a, LinkedList<Chromosome> b) {
+        for (int i = 0; i < a.size(); i++)
+            if (!a.get(i).getGene().equals(b.get(i).getGene())) return false;
+        return true;
     }
 }

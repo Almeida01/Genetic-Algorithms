@@ -2,7 +2,6 @@ package main.models;
 
 import main.fitness.OneMax;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -28,18 +27,18 @@ public class Population {
     }
 
     public Population(int n) {
-        this();
+        this.population = new LinkedList<>();
         this.size = n;
     }
 
     public Population(int n, int l, Random generator) {
-        this(n);
+        this.population = new LinkedList<>();
         for (int i = 0; i < n; i++) {
-            addChromossome(new Chromosome(l, generator));
+            addChromosome(new Chromosome(l, generator));
         }
     }
 
-    public void addChromossome(Chromosome chromosome) {
+    public void addChromosome(Chromosome chromosome) {
         population.add(chromosome);
         totalFitness += chromosome.getFitness();
         size++;
@@ -59,7 +58,7 @@ public class Population {
         return str.toString();
     }
 
-    public int mapToPopSize(int min, int max, double value) {
+    public static int mapToPopSize(int min, int max, double value) {
         return (int) (min + Math.round(value * (max - min)));
     }
 
@@ -102,8 +101,8 @@ public class Population {
 
         for (int i = 0; i < this.size; i++) {
             double sum = 0;
+            double u = generator.nextDouble();
             for (int j = 0; j < this.size; j++) {
-                double u = generator.nextDouble();
                 Chromosome c = population.get(j);
                 sum += (c.getFitness() / totalFitness);
                 if (u < sum) {
@@ -119,7 +118,7 @@ public class Population {
     public LinkedList<Chromosome> selectionWithoutReplacement(Random generator, int s) {
         int[] permutation;
         LinkedList<Chromosome> tournament = new LinkedList<>();
-        LinkedList<Chromosome> fighters = new LinkedList<>();
+        LinkedList<Chromosome> fighters;
         int battles = size / s;
         for (int i = 0; i < s; i++) {
             fighters = new LinkedList<>();
@@ -151,7 +150,12 @@ public class Population {
      * @param pc        Crossover probability
      * @param pm        Mutation probability
      */
-    public LinkedList<Chromosome> oneGerationOneMax(Random generator, int s, double pc, double pm) {
+    public LinkedList<Chromosome> oneGenerationOneMax(Random generator, int s, double pm, double pc) {
+        for (Chromosome chromosome : population) {
+            OneMax oneMax = new OneMax(chromosome);
+            chromosome.setFitness(oneMax);
+        }
+
         LinkedList<Chromosome> generation = this.selectionWithoutReplacement(generator, s);
 //        System.out.println("Select: " + generation);
         for (int i = 0; i < generation.size() - 1; i += 2) {
