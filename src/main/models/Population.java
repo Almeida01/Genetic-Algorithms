@@ -59,7 +59,7 @@ public class Population {
         return str.toString();
     }
 
-    public static int mapToPopSize(int min, int max, double value) {
+    public int mapToPopSize(int min, int max, double value) {
         return (int) (min + Math.round(value * (max - min)));
     }
 
