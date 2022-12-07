@@ -97,7 +97,7 @@ public class Chromosome implements IProblem {
 
     public Chromosome[] onePointCrossover(Random generator, Chromosome parent2) {
         double u = generator.nextDouble();
-        int crossPoint = getCrossPoint(0, this.getLength() - 1, u);
+        int crossPoint = (int) (1 + Math.round(u * (this.length - 2)));;
 
         String gene1 = this.getGene();
         String gene2 = parent2.getGene();
